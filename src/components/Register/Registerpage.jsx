@@ -17,24 +17,31 @@ export default function Registerpage() {
   const fechaNacimientoRef = useRef(null);
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
-  const [error] = useState(false);
-  const [errorMessage] = useState('');
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleRedirectToOrBack = () => {
-    navigate(location.state?.from ?? '/show');
+    navigate(location.state?.from ?? '/turnos');
   };
 
   const handleSignup = async (e) => {
     e.preventDefault();
+    setError(false);
+    setErrorMessage('');
     try {
       const {nombre,apellido,fechaNacimiento,domicilio,telefono,dni,email,password} = getInputs();
       if (isSignupValid({nombre,apellido,fechaNacimiento,domicilio,telefono,dni,email,password })) {
         await register(nombre,apellido,fechaNacimiento,domicilio,telefono,dni,email,password);
         handleRedirectToOrBack();
-      } else {
-        alert(`Cannot create your account, ${email} might be existed, please try again!`);
       }
     } catch (error) {
+      console.error(error);
+      setError(true);
+      setErrorMessage(
+        error?.code === 'auth/email-already-in-use'
+          ? 'Ese correo electrónico ya está registrado.'
+          : 'No se pudo crear la cuenta. Verifica los datos e intenta nuevamente.'
+      );
     }
   };
 
@@ -76,8 +83,8 @@ export default function Registerpage() {
       alert("Por favro ingrese un email");
       return false;
     }
-    if (validator.isEmpty(password) || !validator.isLength(password, { min: 3 })) {
-      alert("Por favro ingrese una contraseña. La contraseña debe contener al menos 3 caracteres.");
+    if (validator.isEmpty(password) || !validator.isLength(password, { min: 6 })) {
+      alert("Por favor ingrese una contraseña. La contraseña debe contener al menos 6 caracteres.");
       return false;
     }
 

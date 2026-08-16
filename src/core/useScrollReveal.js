@@ -1,20 +1,26 @@
 import ScrollReveal from "scrollreveal";
 import { useEffect } from "react";
 
-export default function useReveal(props, origin, duration, distance, easing){
-useEffect(() =>{
-    ScrollReveal().reveal(props, {
-        duration: duration || 1000,
-        origin: origin || 'top', // ou 'left', 'right', 'top'
-        distance: distance || '20px',
-        easing: easing || 'ease-in-out',
-    })
-}, [props, origin, duration, distance, easing]);
+export default function useScrollReveal(
+  selector,
+  origin = "top",
+  duration = 1000,
+  distance = "20px",
+  easing = "ease-in-out"
+) {
+  useEffect(() => {
+    if (!selector) return undefined;
 
-return {
-    useReveal,
+    const scrollReveal = ScrollReveal();
+    scrollReveal.reveal(selector, {
+      duration,
+      origin,
+      distance,
+      easing,
+    });
+
+    return () => {
+      scrollReveal.clean(selector);
+    };
+  }, [selector, origin, duration, distance, easing]);
 }
-}
-
-    
-

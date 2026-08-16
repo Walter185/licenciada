@@ -5,7 +5,8 @@ import {
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
   signOut,
-} from 'firebase/auth';import { doc, setDoc } from 'firebase/firestore';
+} from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
 
 const PsiContext = createContext({
     login: () => Promise,
@@ -29,8 +30,8 @@ const PsiContext = createContext({
     }
     
     const register = async (nombre,apellido,fechaNacimiento,domicilio,telefono,dni,email,password) => {
-      await createUserWithEmailAndPassword(auth, email, password);
-      await setDoc(doc(db, "pacientes", auth?.currentUser?.uid), {
+      const credential = await createUserWithEmailAndPassword(auth, email, password);
+      await setDoc(doc(db, "pacientes", credential.user.uid), {
         nombre,
         apellido,
         fechaNacimiento,
@@ -38,14 +39,13 @@ const PsiContext = createContext({
         telefono,
         dni,
         email,
-        password,
         role: 'user'
       });
       
     };
 
   const resetPassword = (email) => {
-    return sendPasswordResetEmail(email);
+    return sendPasswordResetEmail(auth, email);
   };
 
   

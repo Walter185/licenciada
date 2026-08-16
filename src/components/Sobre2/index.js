@@ -1,10 +1,9 @@
 import styles from "../Sobre2/Sobre2.module.css";
-import useScrollReveal from "../../Core/useScrollReveal";
+import useScrollReveal from "../../core/useScrollReveal";
 import { boxcontents } from "../../contents";
 
 function Sobre2 (){
-    const { useReveal } = useScrollReveal();
-    useReveal("#boxescontainer");
+    useScrollReveal("#boxescontainer");
     return (
             <div className={styles.containersobre}>
             <div className={styles.boxsobrecontainer} id="boxescontainer">

@@ -76,14 +76,6 @@ const AppointmentBooking = () => {
 
   const timeSlots = Array.from({ length: 10 }, (_, i) => `${i + 9}:00`);
 
-  useEffect(() => {
-    const today = new Date();
-    const nextAvailableDay = calculateNextAvailableDay(today);
-    setCurrentWeekStart(nextAvailableDay);
-    generateWeekDates(nextAvailableDay);
-    fetchUserDetails(); // Obtener detalles del usuario al cargar el componente
-  }, []);
-
   const fetchUserDetails = async () => {
     try {
       const user = auth.currentUser;

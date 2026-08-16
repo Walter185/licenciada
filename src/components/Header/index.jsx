@@ -1,6 +1,6 @@
 import styles from "./Header.module.css";
 import { LiaMapMarkerAltSolid } from "react-icons/lia";
-import { BsFillTelephoneOutboundFill, BsWhatsapp } from "react-icons/bs";
+import { BsWhatsapp } from "react-icons/bs";
 import { SlSocialInstagram } from "react-icons/sl";
 import { TiSocialFacebookCircular } from "react-icons/ti";
 import { BiLogoLinkedin } from "react-icons/bi";
@@ -9,10 +9,7 @@ import logo from "../assets/img/logoPV.png";
 import styled from "styled-components";
 import Nav from "react-bootstrap/Nav";
 import Barra from "./Nav.jsx";
-import { doc, getDoc, getFirestore } from "firebase/firestore";
-import { useContext, useEffect, useState } from "react";
 import { useAuth } from "../../Context/Context.js";
-import { PsiContext } from "../../Context/Context.js";
 
 const Img = styled.img`
   width: 230px !important;
@@ -30,29 +27,6 @@ const Img = styled.img`
 
 function Header({ children }) {
   const { logout, currentUser } = useAuth();
-  const [userRole, setUserRole] = useState(null);
-  const { theme, toggleTheme } = useContext(PsiContext);
-
-  const containerStyles = {
-    backgroundColor: theme === "dark" ? "#343a40" : "#ED1C24",
-    color: theme === "dark" ? "#fff" : "white",
-  };
-
-  useEffect(() => {
-    const fetchUserRole = async () => {
-      if (currentUser) {
-        const db = getFirestore();
-        const userDocRef = doc(db, "users", currentUser.uid);
-        const userDoc = await getDoc(userDocRef);
-        if (userDoc.exists()) {
-          setUserRole(userDoc.data().role);
-        }
-      }
-    };
-
-    fetchUserRole();
-  }, [currentUser]);
-
   return (
     <>
       <div id="topper" className={styles.topper}>
@@ -117,7 +91,7 @@ function Header({ children }) {
               id="logout"
               href="/"
               name="logout"
-              onClick={async (e) => {
+              onClick={async () => {
                 await logout();
               }}
             >

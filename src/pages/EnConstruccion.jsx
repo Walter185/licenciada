@@ -30,6 +30,7 @@ const Img = styled.img`
   }
   @media screen and (max-width: 600px) {
     width: 20rem;
+  }
 `;
 
 export default function EnConstruccion() {
